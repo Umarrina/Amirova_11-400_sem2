@@ -1,0 +1,1 @@
+rootProject.name = "Amirova_11-400_sem2"
