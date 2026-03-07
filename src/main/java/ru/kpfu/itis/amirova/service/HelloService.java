@@ -1,4 +1,4 @@
-package ru.kpfu.itis.amirova.serice;
+package ru.kpfu.itis.amirova.service;
 
 import org.springframework.stereotype.Service;
 

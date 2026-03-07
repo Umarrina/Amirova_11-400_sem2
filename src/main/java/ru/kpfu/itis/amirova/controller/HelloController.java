@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.kpfu.itis.amirova.dto.UserDto;
-import ru.kpfu.itis.amirova.serice.HelloService;
-import ru.kpfu.itis.amirova.serice.UserService;
+import ru.kpfu.itis.amirova.service.HelloService;
+import ru.kpfu.itis.amirova.service.UserService;
 
 import java.util.List;
 

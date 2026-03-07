@@ -13,6 +13,7 @@ val hibernateVersion: String by project
 val postgresVersion: String by project
 val freemarkerVersion: String by project
 val hikariVersion: String by project
+val springDataVersion: String by project
 
 repositories {
     mavenCentral()
@@ -29,13 +30,14 @@ dependencies {
     implementation("org.freemarker:freemarker:$freemarkerVersion")
     implementation("com.zaxxer:HikariCP:${hikariVersion}")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
+    implementation("org.springframework.data:spring-data-jpa:$springDataVersion")
 
-
-//    testImplementation(platform("org.junit:junit-bom:5.10.0"))
-//    testImplementation("org.junit.jupiter:junit-jupiter")
-//    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.springframework:spring-test:$springVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("com.h2database:h2:2.2.224")
+    testImplementation("org.mockito:mockito-core:5.14.2")
 }
-
 application {
     mainClass = "ru.kpfu.itis.amirova.Main"
 }

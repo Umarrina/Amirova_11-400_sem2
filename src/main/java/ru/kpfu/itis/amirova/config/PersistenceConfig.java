@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor;
 import org.springframework.orm.jpa.vendor.Database;
@@ -24,6 +26,7 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @PropertySource("classpath:persistence.properties")
+@EnableJpaRepositories("ru.kpfu.itis.amirova.repository")
 public class PersistenceConfig implements EnvironmentAware {
 
     private Environment environment;
@@ -43,30 +46,37 @@ public class PersistenceConfig implements EnvironmentAware {
         return dataSource;
     }
 
-//    @Bean
-//    public HibernateJpaVendorAdapter jpaVendorAdapter() {
-//        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-//        vendorAdapter.setDatabase(Database.valueOf(environment.getProperty("spring.database")));
-//        vendorAdapter.setShowSql(true);
-//        vendorAdapter.setGenerateDdl(true);
-//        return vendorAdapter;
-//    }
+    @Bean
+    public HibernateJpaVendorAdapter jpaVendorAdapter() {
+        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        vendorAdapter.setDatabase(Database.valueOf(environment.getProperty("spring.database")));
+        vendorAdapter.setShowSql(true);
+        vendorAdapter.setGenerateDdl(true);
+        return vendorAdapter;
+    }
 
-//    @Bean
-//    public EntityManagerFactory entityManagerFactory(DataSource dataSource, HibernateJpaVendorAdapter jpaVendorAdapter) {
-//        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-//        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
-//        entityManagerFactory.setPackagesToScan("ru.kpfu.itis.amirova.model");
-//        entityManagerFactory.setDataSource(dataSource);
-//        entityManagerFactory.afterPropertiesSet();
-//        return entityManagerFactory.getObject();
-//    }
+    @Bean
+    public EntityManagerFactory entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter());
+        entityManagerFactory.setPackagesToScan("ru.kpfu.itis.amirova.model");
+        entityManagerFactory.setDataSource(dataSource());
+        entityManagerFactory.afterPropertiesSet();
+        return entityManagerFactory.getObject();
+    }
+
+    @Bean
+    PlatformTransactionManager transactionManager() {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory());
+        return transactionManager;
+    }
 
     @Bean
     @Primary
-    public LocalSessionFactoryBean sessionFactory(DataSource dataSource) {
+    public LocalSessionFactoryBean localSessionFactoryBean() {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource);
+        sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("ru.kpfu.itis.amirova.model");
 
         Properties hibernateProperties = new Properties();
@@ -77,16 +87,19 @@ public class PersistenceConfig implements EnvironmentAware {
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(LocalSessionFactoryBean localSessionFactoryBean) {
-        return new HibernateTransactionManager(localSessionFactoryBean.getObject());
+    public PlatformTransactionManager hibernateTransactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(localSessionFactoryBean().getObject());
+        return transactionManager;
     }
 
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslationPostProcessor() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
-//    @Bean
-//    public PersistenceAnnotationBeanPostProcessor persistenceAnnotationBeanPostProcessor() {
-//        return new PersistenceAnnotationBeanPostProcessor();
-//    }
+
+    @Bean
+    public PersistenceAnnotationBeanPostProcessor persistenceAnnotationBeanPostProcessor() {
+        return new PersistenceAnnotationBeanPostProcessor();
+    }
 }

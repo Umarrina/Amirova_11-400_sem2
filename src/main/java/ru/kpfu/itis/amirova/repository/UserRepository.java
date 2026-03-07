@@ -1,27 +1,33 @@
 package ru.kpfu.itis.amirova.repository;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ru.kpfu.itis.amirova.model.User;
 
-import java.util.List;
+import java.util.Optional;
 
-@Component
-public class UserRepository {
+@Repository
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    private final SessionFactory sessionFactory;
+    Optional<User> findByUsername(String username);
 
-    public UserRepository(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
+    @Query(value = "select u from User u where u.username = :username")
+    Optional<User> getByUsername(String username);
 
-    @Transactional(readOnly = true)
-    public List<User> findAll() {
-        return sessionFactory.getCurrentSession()
-                .createQuery("from User", User.class)
-                .list();
-    }
+    @Query(value = "select * from users u where u.username = ?1", nativeQuery = true)
+    Optional<User> getByUsernameNative(String username);
+
+    @Modifying
+    @Query(value = "insert into users (username) values (:#{#entity.username})", nativeQuery = true)
+    void create(@Param("entity") User entity);
+
+    @Modifying
+    @Query(value = "update users set username = :#{#entity.username} where id = :#{#entity.id}", nativeQuery = true)
+    void update(@Param("entity") User entity);
+
+    @Override
+    void delete(User entity);
 }
