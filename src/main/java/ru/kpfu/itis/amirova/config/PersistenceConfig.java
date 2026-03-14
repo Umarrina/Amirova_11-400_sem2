@@ -78,11 +78,9 @@ public class PersistenceConfig implements EnvironmentAware {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("ru.kpfu.itis.amirova.model");
-
         Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
+        hibernateProperties.setProperty("hibernate.dialect", environment.getProperty("hibernate.dialect"));
         sessionFactory.setHibernateProperties(hibernateProperties);
-
         return sessionFactory;
     }
 

@@ -1,19 +1,19 @@
 plugins {
     id("java")
-    id("application")
     id("war")
 }
 
-group = "ru.kpfu.itis.amirova"
+group = "org.example"
 version = "1.0-SNAPSHOT"
 
 val springVersion: String by project
+val springDataVersion: String by project
+val springSecurityVersion: String by project
 val jakartaVersion: String by project
 val hibernateVersion: String by project
 val postgresVersion: String by project
 val freemarkerVersion: String by project
 val hikariVersion: String by project
-val springDataVersion: String by project
 
 repositories {
     mavenCentral()
@@ -24,9 +24,15 @@ dependencies {
     implementation("org.springframework:spring-jdbc:$springVersion")
     implementation("org.springframework:spring-orm:$springVersion")
     implementation("org.springframework:spring-context-support:$springVersion")
+    implementation("org.springframework.data:spring-data-jpa:$springDataVersion")
+    implementation("org.springframework.security:spring-security-core:$springSecurityVersion")
+    implementation("org.springframework.security:spring-security-web:$springSecurityVersion")
+    implementation("org.springframework.security:spring-security-config:$springSecurityVersion")
+    implementation("org.springframework.security:spring-security-taglibs:$springSecurityVersion")
     implementation("jakarta.servlet:jakarta.servlet-api:$jakartaVersion")
     implementation("org.hibernate.orm:hibernate-core:$hibernateVersion")
     implementation("org.postgresql:postgresql:$postgresVersion")
+
     implementation("org.freemarker:freemarker:$freemarkerVersion")
     implementation("com.zaxxer:HikariCP:${hikariVersion}")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
@@ -38,9 +44,8 @@ dependencies {
     testImplementation("com.h2database:h2:2.2.224")
     testImplementation("org.mockito:mockito-core:5.14.2")
 }
-application {
-    mainClass = "ru.kpfu.itis.amirova.Main"
-}
+
+
 
 tasks.test {
     useJUnitPlatform()
