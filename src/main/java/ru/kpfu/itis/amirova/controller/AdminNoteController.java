@@ -31,7 +31,7 @@ public class AdminNoteController {
 
     @DeleteMapping("/notes/{id}")
     public void deleteNote(@PathVariable Long id) {
-        noteRepository.deleteById(id);
+        noteRepository.deleteNoteById(id);
     }
 
     private NoteDto toDto(Note note) {

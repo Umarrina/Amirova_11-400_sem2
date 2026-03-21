@@ -21,6 +21,5 @@
     </#list>
 </table>
 <br>
-<a href="/">На главную</a>
 </body>
 </html>

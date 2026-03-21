@@ -4,6 +4,9 @@
 </head>
 <body>
 <h1>Мои заметки</h1>
+<#if RequestParameters.error?? && RequestParameters.error == "not_your_note">
+    <div style="color:red">Вы не можете редактировать или удалять чужие заметки</div>
+</#if>
 <a href="/notes/create">Создать заметку</a>
 <br><br>
 <table border="1">

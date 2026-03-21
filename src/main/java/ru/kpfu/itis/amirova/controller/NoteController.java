@@ -62,7 +62,7 @@ public class NoteController {
         Note note = noteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Заметка не найдена"));
         if (!note.getAuthor().getId().equals(userDetails.getUser().getId())) {
-            throw new RuntimeException("Чужие заметки нельзя редактировать");
+            return "redirect:/notes?error=not_your_note";
         }
         model.addAttribute("note", note);
         return "note_form";
@@ -76,7 +76,7 @@ public class NoteController {
         Note note = noteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Заметка не найдена"));
         if (!note.getAuthor().getId().equals(userDetails.getUser().getId())) {
-            throw new RuntimeException("Чужие заметки нельзя редактировать");
+            return "redirect:/notes?error=not_your_note";
         }
         note.setTitle(updatedNote.getTitle());
         note.setContent(updatedNote.getContent());
@@ -91,7 +91,7 @@ public class NoteController {
         Note note = noteRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Заметка не найдена"));
         if (!note.getAuthor().getId().equals(userDetails.getUser().getId())) {
-            throw new RuntimeException("Чужие заметки нельзя удалять");
+            return "redirect:/notes?error=not_your_note";
         }
         noteRepository.delete(note);
         return "redirect:/notes";

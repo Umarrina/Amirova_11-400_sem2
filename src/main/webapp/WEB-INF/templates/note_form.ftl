@@ -4,7 +4,7 @@
 </head>
 <body>
 <h1><#if note.id??>Редактирование<#else>Создание</#if> заметки</h1>
-<form action="/notes/${note.id}/edit" method="post">
+<form action="<#if note.id??>/notes/${note.id}/edit<#else>/notes/create</#if>" method="post">
     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     <div>
         <label>Заголовок:</label><br>
@@ -16,7 +16,6 @@
     </div>
     <div>
         <label>Публичная:</label>
-        <input type="hidden" name="isPublic" value="false" />
         <input type="checkbox" name="isPublic" value="true" <#if note.isPublic?? && note.isPublic>checked</#if> />
     </div>
     <button type="submit">Сохранить</button>
