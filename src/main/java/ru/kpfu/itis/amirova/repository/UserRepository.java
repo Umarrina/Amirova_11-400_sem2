@@ -33,4 +33,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Override
     void delete(User entity);
+
+    Optional<User> findByVerificationCode(String code);
+
 }
