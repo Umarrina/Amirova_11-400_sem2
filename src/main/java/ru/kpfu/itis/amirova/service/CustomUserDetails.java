@@ -33,6 +33,10 @@ public class CustomUserDetails implements UserDetails {
         return user.getUsername();
     }
 
+    @Override
+    public boolean isEnabled() {
+        return user.isEnabled();
+    }
 
     public User getUser() {
         return user;

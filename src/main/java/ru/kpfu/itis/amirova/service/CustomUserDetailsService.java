@@ -4,10 +4,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.kpfu.itis.amirova.model.User;
 import ru.kpfu.itis.amirova.repository.UserRepository;
 
-import java.util.Optional;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -20,8 +18,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByUsernameWithRoles(username);
-        return user.map(CustomUserDetails::new)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
+        return userRepository.findByUsernameWithRoles(username)
+                .map(CustomUserDetails::new)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
     }
 }
