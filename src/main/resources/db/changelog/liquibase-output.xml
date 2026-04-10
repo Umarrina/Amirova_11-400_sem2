@@ -1,0 +1,76 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="amiro (generated)" id="1775861795524-1">
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="role_pkey"/>
+            </column>
+            <column name="name" type="VARCHAR(15)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-2">
+        <createTable tableName="track">
+            <column autoIncrement="true" name="id" startWith="17" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="track_pkey"/>
+            </column>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="author" type="VARCHAR(255)"/>
+            <column name="filepath" type="VARCHAR(1023)"/>
+            <column name="approved" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-3">
+        <createTable tableName="situation">
+            <column autoIncrement="true" name="id" startWith="12" type="INTEGER">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="situation_pkey"/>
+            </column>
+            <column name="user_id" type="CHAR(36)"/>
+            <column name="title" type="VARCHAR(255)"/>
+            <column name="description" type="VARCHAR(1023)"/>
+            <column name="date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="approved" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-4">
+        <createTable tableName="tracks_situations">
+            <column name="id_situation" type="INTEGER"/>
+            <column name="id_track" type="INTEGER"/>
+            <column name="id_user_suggest" type="CHAR(36)"/>
+            <column name="approved" type="BOOLEAN"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-5">
+        <createTable tableName="users">
+            <column name="id" type="CHAR(36)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="users_pkey"/>
+            </column>
+            <column name="login" type="VARCHAR(31)"/>
+            <column name="password" type="VARCHAR(255)"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="role" type="INTEGER"/>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="firstname" type="VARCHAR(255)"/>
+            <column name="lastname" type="VARCHAR(255)"/>
+            <column name="bio" type="VARCHAR(1023)"/>
+            <column name="profilephoto" type="VARCHAR(1023)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-6">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="situation" constraintName="situation_user_id_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-7">
+        <addForeignKeyConstraint baseColumnNames="author" baseTableName="track" constraintName="track_author_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-8">
+        <addForeignKeyConstraint baseColumnNames="id_situation" baseTableName="tracks_situations" constraintName="tracks_situations_id_situation_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="situation" validate="true"/>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-9">
+        <addForeignKeyConstraint baseColumnNames="id_track" baseTableName="tracks_situations" constraintName="tracks_situations_id_track_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="track" validate="true"/>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-10">
+        <addForeignKeyConstraint baseColumnNames="id_user_suggest" baseTableName="tracks_situations" constraintName="tracks_situations_id_user_suggest_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="users" validate="true"/>
+    </changeSet>
+    <changeSet author="amiro (generated)" id="1775861795524-11">
+        <addForeignKeyConstraint baseColumnNames="role" baseTableName="users" constraintName="users_role_fkey" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="role" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
