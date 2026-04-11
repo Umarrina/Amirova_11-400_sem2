@@ -5,6 +5,7 @@ plugins {
     id("org.springframework.boot") version "3.4.4"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.liquibase.gradle") version "2.2.2"
+    id("jacoco")
 }
 
 group = "org.example"
@@ -42,10 +43,9 @@ dependencies {
     liquibaseRuntime("org.liquibase:liquibase-core:4.33.0")
     liquibaseRuntime("org.postgresql:postgresql:$postgresVersion")
     liquibaseRuntime("info.picocli:picocli:4.6.3")
-}
 
-tasks.test {
-    useJUnitPlatform()
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 val props = Properties()
@@ -62,4 +62,45 @@ liquibase {
             "driver" to props.get("driver-class-name")
         )
     }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+val jacocoExcludes = listOf(
+    "**/ru/kpfu/itis/amirova/dto/**",
+    "**/ru/kpfu/itis/amirova/model/**",
+    "**/ru/kpfu/itis/amirova/config/**"
+)
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+    reports {
+        xml.required.set(false)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
+    }
+    classDirectories.setFrom(files(classDirectories.files.map {
+        fileTree(it).matching {
+            exclude(jacocoExcludes)
+        }
+    }))
+}
+jacoco {
+    toolVersion = "0.8.12"
+    reportsDirectory.set(layout.buildDirectory.dir("jacoco"))
+}
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = BigDecimal.valueOf(0.1)
+            }
+        }
+    }
+    classDirectories.setFrom(files(classDirectories.files.map {
+        fileTree(it).matching {
+            exclude(jacocoExcludes)
+        }
+    }))
 }

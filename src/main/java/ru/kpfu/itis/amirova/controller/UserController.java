@@ -1,10 +1,15 @@
 package ru.kpfu.itis.amirova.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ru.kpfu.itis.amirova.dto.CreateUserDto;
+import ru.kpfu.itis.amirova.dto.UserDto;
 import ru.kpfu.itis.amirova.service.UserService;
+
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -19,8 +24,13 @@ public class UserController {
     @PostMapping("/users")
     public String createUser(@RequestBody CreateUserDto createUserDto) {
         userService.createUser(createUserDto);
-
         return "success_sign_up";
+    }
+
+    @ResponseBody
+    @GetMapping("/users")
+    public List<UserDto> getUsers() {
+        return userService.findAll();
     }
 
 }

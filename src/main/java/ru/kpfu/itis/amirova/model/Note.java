@@ -75,6 +75,14 @@ public class Note {
         return author;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
+
     public void setAuthor(User author) {
         this.author = author;
     }

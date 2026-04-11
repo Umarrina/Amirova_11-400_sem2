@@ -25,8 +25,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 465
-    username: *****
-    password: *****
+    username: amirovaarina90@gmail.com
+    password: oaqfnkntrakcwhyr
     properties:
       mail:
         smtp:
@@ -37,7 +37,7 @@ spring:
 mail:
   base-url: http://localhost:8080
   sender: Test Application
-  from: *****
+  from: amirovaarina90@gmail.com
   subject: Please verify your account
   content: "Dear $name, please follow the link below to verify your account: <a href=$url>VERIFY</a>"
 
