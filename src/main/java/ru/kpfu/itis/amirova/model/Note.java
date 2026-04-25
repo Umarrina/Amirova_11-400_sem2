@@ -25,10 +25,10 @@ public class Note {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column(name = "is_public", nullable = false)
     private Boolean isPublic;
 
     @ManyToOne(fetch = FetchType.LAZY)

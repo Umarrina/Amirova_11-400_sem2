@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.kpfu.itis.amirova.aop.Benchmark;
+import ru.kpfu.itis.amirova.aop.Metrics;
 import ru.kpfu.itis.amirova.dto.NoteDto;
 import ru.kpfu.itis.amirova.model.Note;
 import ru.kpfu.itis.amirova.repository.NoteRepository;
@@ -30,6 +32,8 @@ public class AdminNoteController {
     }
 
     @DeleteMapping("/notes/{id}")
+    @Metrics
+    @Benchmark
     public void deleteNote(@PathVariable Long id) {
         noteRepository.deleteNoteById(id);
     }

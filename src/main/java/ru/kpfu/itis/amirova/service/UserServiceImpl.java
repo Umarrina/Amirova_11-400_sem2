@@ -7,6 +7,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kpfu.itis.amirova.aop.Benchmark;
+import ru.kpfu.itis.amirova.aop.Metrics;
 import ru.kpfu.itis.amirova.config.MailProperties;
 import ru.kpfu.itis.amirova.dto.CreateUserDto;
 import ru.kpfu.itis.amirova.dto.UserDto;
@@ -43,6 +45,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    @Metrics
+    @Benchmark
     public void createUser(CreateUserDto createUserDto) {
         if (userRepository.findByUsername(createUserDto.username()).isPresent()) {
             throw new RuntimeException("Username already exists");

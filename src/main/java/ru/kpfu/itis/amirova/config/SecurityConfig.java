@@ -23,7 +23,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/", "/sign_up", "/verification", "/verify_page", "/notes/public").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/sign_up").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/sign_up", "/metrics/**", "/benchmark/**").permitAll()
                         .requestMatchers("/notes/**").hasRole("USER")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()

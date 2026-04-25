@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import ru.kpfu.itis.amirova.aop.Benchmark;
+import ru.kpfu.itis.amirova.aop.Metrics;
 import ru.kpfu.itis.amirova.model.Note;
 import ru.kpfu.itis.amirova.repository.NoteRepository;
 import ru.kpfu.itis.amirova.service.CustomUserDetails;
@@ -40,12 +42,16 @@ public class NoteController {
     }
 
     @GetMapping("/create")
+    @Metrics
+    @Benchmark
     public String createNote(Model model) {
         model.addAttribute("note", new Note());
         return "note_form";
     }
 
     @PostMapping("/create")
+    @Metrics
+    @Benchmark
     public String createNote(@ModelAttribute Note note,
                              @RequestParam(value = "isPublic", required = false) Boolean isPublic,
                              @AuthenticationPrincipal CustomUserDetails userDetails) {
