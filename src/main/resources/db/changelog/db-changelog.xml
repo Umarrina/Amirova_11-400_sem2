@@ -6,4 +6,6 @@
     <include file="/v1/2026-04-04--01-init-table.xml"
              relativeToChangelogFile="true"
     ></include>
+    <include file="/v1/2026-05-23--02-create-chat-messages-table.xml"
+             relativeToChangelogFile="true"></include>
 </databaseChangeLog>

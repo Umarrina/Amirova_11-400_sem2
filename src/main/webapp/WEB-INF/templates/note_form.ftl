@@ -5,7 +5,6 @@
 <body>
 <h1><#if note.id??>Редактирование<#else>Создание</#if> заметки</h1>
 <form action="<#if note.id??>/notes/${note.id}/edit<#else>/notes/create</#if>" method="post">
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
     <div>
         <label>Заголовок:</label><br>
         <input type="text" name="title" value="${note.title!''}" required>

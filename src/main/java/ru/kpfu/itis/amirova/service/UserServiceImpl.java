@@ -48,25 +48,36 @@ public class UserServiceImpl implements UserService {
     @Metrics
     @Benchmark
     public void createUser(CreateUserDto createUserDto) {
-        if (userRepository.findByUsername(createUserDto.username()).isPresent()) {
-            throw new RuntimeException("Username already exists");
+        try {
+            System.out.println("=== Начало регистрации: " + createUserDto.username());
+
+            if (userRepository.findByUsername(createUserDto.username()).isPresent()) {
+                throw new RuntimeException("Username already exists");
+            }
+
+            User user = new User();
+            user.setUsername(createUserDto.username());
+            user.setEmail(createUserDto.email());
+            user.setPassword(passwordEncoder.encode(createUserDto.password()));
+            user.setEnabled(false);
+            user.setVerificationCode(UUID.randomUUID().toString());
+
+            Role userRole = roleRepository.findByName("ROLE_USER")
+                    .orElseThrow(() -> new RuntimeException("ROLE_USER not found"));
+            user.setRoles(List.of(userRole));
+
+            userRepository.save(user);
+            System.out.println("=== Пользователь сохранён, ID=" + user.getId());
+
+            // sendVerificationMail(user);
+            System.out.println("=== Письмо отправлено");
+
+            System.out.println("Verification code for " + user.getUsername() + ": " + user.getVerificationCode());
+        } catch (Exception e) {
+            System.err.println("=== Ошибка при регистрации: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
-
-        User user = new User();
-        user.setUsername(createUserDto.username());
-        user.setEmail(createUserDto.email());
-        user.setPassword(passwordEncoder.encode(createUserDto.password()));
-        user.setEnabled(false);
-        user.setVerificationCode(UUID.randomUUID().toString());
-
-        Role userRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("ROLE_USER not found"));
-        user.setRoles(List.of(userRole));
-
-        userRepository.save(user);
-        sendVerificationMail(user);
-
-        System.out.println("Verification code for " + user.getUsername() + ": " + user.getVerificationCode());
     }
 
     private void sendVerificationMail(User user) {

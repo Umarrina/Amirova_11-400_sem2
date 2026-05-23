@@ -13,6 +13,7 @@ version = "1.0-SNAPSHOT"
 
 val springSecurityVersion: String by project
 val postgresVersion: String by project
+val jwtVersion: String by project
 
 repositories {
     mavenCentral()
@@ -30,6 +31,7 @@ dependencies {
     implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("org.springframework.boot:spring-boot-starter-freemarker")
     implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("javax.mail:javax.mail-api:1.6.2")
     implementation("org.springframework.security:spring-security-taglibs:${springSecurityVersion}")
 
@@ -44,6 +46,16 @@ dependencies {
     liquibaseRuntime("org.liquibase:liquibase-core:4.33.0")
     liquibaseRuntime("org.postgresql:postgresql:$postgresVersion")
     liquibaseRuntime("info.picocli:picocli:4.6.3")
+
+    implementation("org.webjars:stomp-websocket:2.3.4")
+    implementation("org.webjars:sockjs-client:1.5.1")
+    implementation("org.webjars:jquery:3.6.0")
+    implementation("org.webjars:bootstrap:4.6.0")
+    implementation("org.webjars:webjars-locator-core:0.46")
+
+    implementation("io.jsonwebtoken:jjwt-api:$jwtVersion")
+    implementation("io.jsonwebtoken:jjwt-impl:$jwtVersion")
+    implementation("io.jsonwebtoken:jjwt-jackson:$jwtVersion")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
@@ -104,4 +116,15 @@ tasks.jacocoTestCoverageVerification {
             exclude(jacocoExcludes)
         }
     }))
+}
+
+sourceSets {
+    getByName("main") {
+        java {
+            srcDir(layout.buildDirectory.dir("generated/src/main/java"))
+        }
+        resources {
+            srcDir("src/main/webapp")
+        }
+    }
 }

@@ -10,7 +10,6 @@
 </#if>
 
 <form action="/sign_up" method="post">
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div>
         <label>Имя пользователя:</label><br>
         <input type="text" name="username" placeholder="Имя пользователя" required>

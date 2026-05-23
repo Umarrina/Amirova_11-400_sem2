@@ -26,7 +26,6 @@
             <td>
                 <a href="/notes/${note.id}/edit">Редактировать</a>
                 <form action="/notes/${note.id}/delete" method="post" style="display:inline">
-                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <button type="submit">Удалить</button>
                 </form>
             </td>

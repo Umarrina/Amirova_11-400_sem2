@@ -10,7 +10,6 @@
 </#if>
 
 <form action="/verify" method="post">
-    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     <div>
         <label>Код подтверждения:</label><br>
         <input type="text" name="code" placeholder="Введите код" required>
